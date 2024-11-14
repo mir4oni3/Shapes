@@ -8,8 +8,6 @@
 */
 #pragma once
 
-#include <memory>
-
 #include "Figures.hpp"
 
 class AbstractFigureFactory {

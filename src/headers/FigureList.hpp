@@ -16,8 +16,6 @@
 
 class FigureList {
     std::vector<std::unique_ptr<Figure>> figures;
-
-    void output(std::ostream& out) const;
 public:
     FigureList(int capacity);
     virtual ~FigureList();
@@ -30,7 +28,7 @@ public:
     void push(const std::unique_ptr<Figure>& figure);
     void duplicateAt(int i);
 
+    void print() const;
+    void printToFile(const std::string& filename) const;
     int getSize() const;
-    void print() const; //uses output()
-    void printToFile(const std::string& filename) const; // uses output()
 };
