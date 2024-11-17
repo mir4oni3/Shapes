@@ -2,8 +2,7 @@
 #include <sstream>
 
 #include "../headers/Figures.hpp"
-
-#define mathPI 3.14159
+#include "../headers/Constants.hpp"
 
 namespace {
     void checkTriangleParams(double a, double b, double c) {
@@ -59,8 +58,8 @@ void Figure::print() const {
     }
 }
 
-void Figure::printToFile(std::ofstream& filename) const {
-    if (!filename.is_open()) {
+void Figure::printToFile(std::ofstream& stream) const {
+    if (!stream.is_open()) {
         throw std::invalid_argument("File is not open");
     }
 

@@ -42,9 +42,18 @@ std::string ConsoleUI::promptUser() {
 
 std::unique_ptr<FigureList> ConsoleUI::createList(const std::string& choice, const std::string& filename, int N) {
     AbstractFigureFactory factory;
-    std::unique_ptr<FigureFactory> figureFactory = factory.getFigureFactory(choice, filename);
 
-    std::unique_ptr<FigureList> list = std::make_unique<FigureList>(new FigureList(N));
+    std::unique_ptr<FigureFactory> figureFactory;
+    try {
+        figureFactory = factory.getFigureFactory(choice, filename);
+    } catch(std::invalid_argument& e) {
+        std::cout << "Exception thrown! " << std::endl << e.what() << std::endl;
+        std::cout << "Creating random figure factory instead..." << std::endl;
+        figureFactory = std::make_unique<RandomFigureFactory>();
+    }
+
+    std::unique_ptr<FigureList> list = std::make_unique<FigureList>(N);
+
     for (int i = 0; i < N; i++) {
         list->push(figureFactory->create());
     }
@@ -87,7 +96,7 @@ void ConsoleUI::execute() {
     if (choice == "exit") {
         return;
     }
-    std::string filename = "";
+    std::string filename;
     if (choice == "file") {
         std::cout << "Please enter the filename: ";
         std::cin >> filename;

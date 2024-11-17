@@ -15,17 +15,19 @@
 #include "FigureFactory.hpp"
 
 class FigureList {
-    std::vector<std::unique_ptr<Figure>> figures;
+    std::vector<std::shared_ptr<Figure>> figures;
+    int size = 0;
 public:
-    FigureList(int capacity);
-    virtual ~FigureList();
+    FigureList(unsigned int capacity);
+    FigureList() = default;
+    virtual ~FigureList() = default;
 
-    std::unique_ptr<Figure>& getAt(int i) const;
-    void setAt(int i, const std::unique_ptr<Figure>& figure);
+    const std::shared_ptr<Figure>& getAt(int i) const;
+    void setAt(int i, const std::shared_ptr<Figure>& figure);
     void removeAt(int i);
     void pop();
-    void insertAt(int i, const std::unique_ptr<Figure>& figure);
-    void push(const std::unique_ptr<Figure>& figure);
+    void insertAt(int i, const std::shared_ptr<Figure>& figure);
+    void push(const std::shared_ptr<Figure>& figure);
     void duplicateAt(int i);
 
     void print() const;

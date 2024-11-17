@@ -28,7 +28,8 @@ public:
 };
 
 class StreamFigureFactory : public FigureFactory {
+    std::shared_ptr<std::istream> stream; // non-owning
 public:
-    StreamFigureFactory(std::istream& in); // either STDIN(using cin maybe) or from file(using ifstream maybe)
-    std::unique_ptr<Figure> create() const override; // read a line of text from the stream and then pass it to the FigureStringParser factory
+    StreamFigureFactory(std::shared_ptr<std::istream>& in);
+    std::unique_ptr<Figure> create() const override;
 };
