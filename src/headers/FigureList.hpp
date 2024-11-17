@@ -16,10 +16,7 @@
 
 class FigureList {
     std::vector<std::shared_ptr<Figure>> figures;
-    int size = 0;
 public:
-    FigureList(unsigned int capacity);
-    FigureList() = default;
     virtual ~FigureList() = default;
 
     const std::shared_ptr<Figure>& getAt(int i) const;

@@ -35,8 +35,8 @@ namespace {
         double sides[3];
         sides[0] = generateRandomDouble(dblrng::MIN_DBL, std::min(dblrng::MAX_DBL, DBL_MAX / 2 - epsilon));
         sides[1] = generateRandomDouble(dblrng::MIN_DBL, std::min(dblrng::MAX_DBL, DBL_MAX / 2 - epsilon));
-        sides[2] = generateRandomDouble(std::max(dblrng::MIN_DBL, std::abs(sides[0] - sides[1])), std::min(dblrng::MAX_DBL, DBL_MAX - sides[0] - sides[1]));
-
+        sides[2] = generateRandomDouble(std::max(dblrng::MIN_DBL, std::abs(sides[0] - sides[1])), std::min(dblrng::MAX_DBL, sides[0] + sides[1]));
+        
         //in our case, triangle with sides A,B,C will be considered different from triangle with sides B,A,C
         int choose = rand() % 3; // choose which will be side A
         std::swap(sides[0], sides[choose]);
@@ -84,10 +84,13 @@ StreamFigureFactory::StreamFigureFactory(std::shared_ptr<std::istream>& in) : st
 }
 
 std::unique_ptr<Figure> StreamFigureFactory::create() const {
-    if (!stream || !*stream) { //since StreamFigureFactory is not owning the stream, we have to check
-        throw std::invalid_argument("Invalid stream");
+    if (!stream || !*stream) {
+        throw std::invalid_argument("Invalid stream/No more data");
     }
 
+    if (stream->peek() == '\n') {
+        stream->ignore();
+    }
     std::string figureStr;
     std::getline(*stream, figureStr);
 
@@ -96,7 +99,9 @@ std::unique_ptr<Figure> StreamFigureFactory::create() const {
         result = FigureStringParser::createFigure(figureStr);
     } catch (std::invalid_argument& e) {
         std::cout << "Exception thrown! " << std::endl << e.what() << std::endl;
+        std::cout << "Type: " + figureStr + " doesn't exist" << std::endl;
         std::cout << "Creating default circle with radius 1 instead..." << std::endl;
+        std::cout << std::endl << std::endl;
         result = std::make_unique<Circle>(1);
     }
 

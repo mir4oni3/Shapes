@@ -20,6 +20,7 @@ class ConsoleUI {
     static std::string enterChoice();
     static std::string promptUser();
     static std::unique_ptr<FigureList> createList(const std::string& choice, const std::string& filename, int N);
+    static std::string action(const std::string& choice, std::unique_ptr<FigureList>& list);
     static void startLoop(std::unique_ptr<FigureList>& list);
 public:
     static void execute();

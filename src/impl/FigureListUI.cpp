@@ -5,6 +5,7 @@ int ConsoleUI::enterCount() {
     do {
         std::cout << "Please enter the number of figures you would like to create(0 < N <= 1 000 000): ";
         std::cin >> N;
+        std::cout << std::endl << std::endl;
     } while (N <= 0 || N > 1'000'000);
     return N;
 }
@@ -21,6 +22,8 @@ std::string ConsoleUI::enterChoice() {
         std::cout << "Please enter your choice [random|stdin|file|exit]: ";
         std::cin >> choice;
     } while (choice != "random" && choice != "stdin" && choice != "file" && choice != "exit");
+    std::cout << std::endl << std::endl;
+
     return choice;
 }
 
@@ -49,43 +52,66 @@ std::unique_ptr<FigureList> ConsoleUI::createList(const std::string& choice, con
     } catch(std::invalid_argument& e) {
         std::cout << "Exception thrown! " << std::endl << e.what() << std::endl;
         std::cout << "Creating random figure factory instead..." << std::endl;
+        std::cout << std::endl << std::endl;
         figureFactory = std::make_unique<RandomFigureFactory>();
     }
 
-    std::unique_ptr<FigureList> list = std::make_unique<FigureList>(N);
+    std::unique_ptr<FigureList> list = std::make_unique<FigureList>();
 
     for (int i = 0; i < N; i++) {
-        list->push(figureFactory->create());
+        try {
+            list->push(figureFactory->create());
+        } catch(std::invalid_argument& e) {
+            std::cout << "Exception thrown! " << std::endl << e.what() << std::endl;
+            std::cout << "Couldn't add figure to list..." << std::endl;
+            std::cout << std::endl << std::endl;
+            break;
+        }
     }
 
     return list;
 }
 
+std::string ConsoleUI::action(const std::string& choice, std::unique_ptr<FigureList>& list) {
+    if (choice == "list") {
+        list->print();
+    }
+    else if (choice == "del") {
+        int index;
+        std::cin >> index;
+        try {
+            list->removeAt(index);
+        } catch(const std::out_of_range& e) {
+            std::cout << "Exception thrown! " << std::endl << e.what() << std::endl;
+            std::cout << "Figure cannot be deleted" << std::endl;
+            std::cout << std::endl << std::endl;
+        }
+    }
+    else if (choice == "dup") {
+        int index;
+        std::cin >> index;
+        try {
+            list->duplicateAt(index);
+        } catch(const std::out_of_range& e) {
+            std::cout << "Exception thrown! " << std::endl << e.what() << std::endl;
+            std::cout << "Figure cannot be duplicated" << std::endl;
+            std::cout << std::endl << std::endl;
+        }
+    }
+    else if (choice == "store") {
+        std::string filename;
+        std::cout << "Please enter the filename: " << std::endl;
+        std::cin >> filename;
+        list->printToFile(filename);
+    }
+    return choice;
+}
+
 void ConsoleUI::startLoop(std::unique_ptr<FigureList>& list) {
     std::string choice;
-     while(true) {
+     while(choice != "exit") {
         choice = promptUser();
-        if (choice == "exit") {
-            break;
-        }
-        else if (choice == "list") {
-            list->print();
-        }
-        else if (choice == "del") {
-            int index;
-            std::cin >> index;
-            list->removeAt(index);
-        }
-        else if (choice == "dup") {
-            int index;
-            std::cin >> index;
-            list->duplicateAt(index);
-        }
-        else if (choice == "store") {
-            std::string filename;
-            std::cin >> filename;
-            list->printToFile(filename);
-        }
+        action(choice, list);
     }
 }
 
@@ -95,6 +121,9 @@ void ConsoleUI::execute() {
 
     if (choice == "exit") {
         return;
+    }
+    if (choice == "stdin") {
+        std::cout << "Please enter the figures in the following format: figureType [PARAMETER]..." << std::endl;
     }
     std::string filename;
     if (choice == "file") {

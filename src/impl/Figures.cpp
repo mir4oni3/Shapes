@@ -56,6 +56,7 @@ void Figure::print() const {
     } catch (const std::invalid_argument& e) {
         std::cout << "Exception thrown! " << std::endl << e.what() << std::endl;
         std::cout << "Figure cannot be printed" << std::endl;
+        std::cout << std::endl << std::endl;
     }
 }
 
@@ -65,10 +66,11 @@ void Figure::printToFile(std::ofstream& stream) const {
     }
 
     try {
-        output(std::cout);
+        output(stream);
     } catch (const std::invalid_argument& e) {
         std::cout << "Exception thrown! " << std::endl << e.what() << std::endl;
         std::cout << "Figure cannot be printed" << std::endl;
+        std::cout << std::endl << std::endl;
     }
 }
 
@@ -78,6 +80,7 @@ Triangle::Triangle(double a, double b, double c) : a(a), b(b), c(c) {
     } catch (const std::invalid_argument& e) {
         std::cout << "Exception thrown! " << std::endl << e.what() << std::endl;
         std::cout << "Setting default values..." << std::endl;
+        std::cout << std::endl << std::endl;
         this->a = 1;
         this->b = 1;
         this->c = 1;
@@ -104,6 +107,7 @@ Circle::Circle(double r) : r(r) {
     } catch (const std::invalid_argument& e) {
         std::cout << "Exception thrown! " << std::endl << e.what() << std::endl;
         std::cout << "Setting default values..." << std::endl;
+        std::cout << std::endl << std::endl;
         this->r = 1;
     }
 }
@@ -128,6 +132,7 @@ Rectangle::Rectangle(double a, double b) : a(a), b(b) {
     } catch (const std::invalid_argument& e) {
         std::cout << "Exception thrown! " << std::endl << e.what() << std::endl;
         std::cout << "Setting default values..." << std::endl;
+        std::cout << std::endl << std::endl;
         this->a = 1;
         this->b = 1;
     }

@@ -9,15 +9,15 @@ std::unique_ptr<Figure> FigureStringParser::createFigure(const std::string& figu
     iStringStream >> figureType;
 
     std::unique_ptr<Figure> result = nullptr;
-    if (figureType == "Triangle") {
+    if (figureType == "triangle") {
         double a, b, c;
         iStringStream >> a >> b >> c;
         result = std::make_unique<Triangle>(a, b, c);
-    } else if (figureType == "Circle") {
+    } else if (figureType == "circle") {
         double r;
         iStringStream >> r;
         result = std::make_unique<Circle>(r);
-    } else if (figureType == "Rectangle") {
+    } else if (figureType == "rectangle") {
         double a, b;
         iStringStream >> a >> b;
         result = std::make_unique<Rectangle>(a, b);
