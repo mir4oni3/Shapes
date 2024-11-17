@@ -1,6 +1,7 @@
 #include <fstream>
 #include <algorithm>
 #include <string>
+#include <cfloat>
 
 #include "../headers/FigureFactory.hpp"
 #include "../headers/Constants.hpp"
@@ -98,6 +99,6 @@ std::unique_ptr<Figure> StreamFigureFactory::create() const {
         std::cout << "Creating default circle with radius 1 instead..." << std::endl;
         result = std::make_unique<Circle>(1);
     }
-    
+
     return result;
 }

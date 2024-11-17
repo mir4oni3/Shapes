@@ -1,5 +1,6 @@
 #include <fstream>
 #include <sstream>
+#include <cfloat>
 
 #include "../headers/Figures.hpp"
 #include "../headers/Constants.hpp"

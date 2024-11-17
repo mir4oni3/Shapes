@@ -8,13 +8,9 @@
 */
 #pragma once
 
-#include "Figures.hpp"
+#include <memory>
 
-class AbstractFigureFactory {
-public:
-    std::unique_ptr<FigureFactory> getFigureFactory(const std::string& FigureFactoryType, const std::string& filename) const;
-    virtual ~AbstractFigureFactory() = default;
-};
+#include "Figures.hpp"
 
 class FigureFactory {
 public:
@@ -32,4 +28,10 @@ class StreamFigureFactory : public FigureFactory {
 public:
     StreamFigureFactory(std::shared_ptr<std::istream>& in);
     std::unique_ptr<Figure> create() const override;
+};
+
+class AbstractFigureFactory {
+public:
+    std::unique_ptr<FigureFactory> getFigureFactory(const std::string& FigureFactoryType, const std::string& filename) const;
+    virtual ~AbstractFigureFactory() = default;
 };
