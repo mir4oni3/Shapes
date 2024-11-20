@@ -54,7 +54,7 @@ void FigureList::duplicateAt(int i) {
     if (i >= figures.size()) {
         throw std::out_of_range("Index out of range");
     }
-    figures.push_back(figures[i]);
+    figures.push_back(figures[i]->clone());
 }
 
 void FigureList::print() const {

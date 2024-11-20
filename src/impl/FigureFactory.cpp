@@ -94,9 +94,10 @@ std::unique_ptr<Figure> StreamFigureFactory::create() const {
     std::string figureStr;
     std::getline(*stream, figureStr);
 
+    FigureStringParser parser;
     std::unique_ptr<Figure> result;
     try {
-        result = FigureStringParser::createFigure(figureStr);
+        result = parser.createFigure(figureStr);
     } catch (std::invalid_argument& e) {
         std::cout << "Exception thrown! " << std::endl << e.what() << std::endl;
         std::cout << "Type: " + figureStr + " doesn't exist" << std::endl;

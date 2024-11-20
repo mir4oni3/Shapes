@@ -2,7 +2,7 @@
 
 #include "../headers/FigureStringParser.hpp"
 
-std::unique_ptr<Figure> FigureStringParser::createFigure(const std::string& figureStr) {
+std::unique_ptr<Figure> FigureStringParser::createFigure(const std::string& figureStr) const {
     std::istringstream iStringStream(figureStr);
     std::string figureType;
 

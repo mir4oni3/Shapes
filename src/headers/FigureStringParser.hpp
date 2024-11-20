@@ -22,6 +22,5 @@
 
 class FigureStringParser {
 public:
-
-    static std::unique_ptr<Figure> createFigure(const std::string& figureStr);
+    std::unique_ptr<Figure> createFigure(const std::string& figureStr) const;
 };
