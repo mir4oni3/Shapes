@@ -26,13 +26,6 @@ std::unique_ptr<Figure> FigureStringParser::createFigure(const std::string& figu
     }
 
     if (paramCount.at(figureType) != params.size()) {
-        std::cout << "expected: " << paramCount.at(figureType) << " got: " << params.size();
-        std::cout << " what: ";
-        for (int i = 0;i < params.size();i++) {
-            std::cout << params[i] << " ";
-        }
-        std::cout << std::endl;
-
         throw std::invalid_argument("Invalid number of parameters");
     }
 
