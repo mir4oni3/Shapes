@@ -14,12 +14,6 @@ TEST_CASE("FigureStringParser", "[figure_string_parser]") {
         REQUIRE_THROWS_AS(parser.createFigure("hmm 1 2 mmh"), std::invalid_argument);
     }
 
-    SECTION("Untrimmed") {
-        REQUIRE_THROWS_AS(parser.createFigure("triangle 2 2 3 "), std::invalid_argument);
-        REQUIRE_THROWS_AS(parser.createFigure("circle 1 "), std::invalid_argument);
-        REQUIRE_THROWS_AS(parser.createFigure("rectangle 1 "), std::invalid_argument);
-    }
-
     SECTION("Empty string") {
         REQUIRE_THROWS_AS(parser.createFigure(""), std::invalid_argument);
     }
@@ -56,6 +50,11 @@ TEST_CASE("FigureStringParser", "[figure_string_parser]") {
         REQUIRE(parser.createFigure(str)->toString() == "triangle 1 1 1");
     }
 
+    SECTION("Triangle7") {
+        std::string str = "triangle 2 2 3 ";
+        REQUIRE(parser.createFigure(str)->toString() == "triangle 2 2 3");
+    }
+    
     SECTION("Circle1") {
         std::string str = "circle 5";
         std::unique_ptr<Figure> c = parser.createFigure(str);
@@ -85,6 +84,11 @@ TEST_CASE("FigureStringParser", "[figure_string_parser]") {
 
     SECTION("Circle6") {
         std::string str = "circle -123";
+        REQUIRE(parser.createFigure(str)->toString() == "circle 1");
+    }
+   
+    SECTION("Circle7") {
+        std::string str = "circle 1 ";
         REQUIRE(parser.createFigure(str)->toString() == "circle 1");
     }
 
@@ -118,6 +122,11 @@ TEST_CASE("FigureStringParser", "[figure_string_parser]") {
     SECTION("Rectangle6") {
         std::string str = "rectangle -5 10";
         REQUIRE(parser.createFigure(str)->toString() == "rectangle 1 1");
+    }
+
+    SECTION("Rectangle7") {
+        std::string str = "rectangle 1 2 ";
+        REQUIRE(parser.createFigure(str)->toString() == "rectangle 1 2");
     }
 
 }

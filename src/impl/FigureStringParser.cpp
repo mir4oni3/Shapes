@@ -1,37 +1,50 @@
 #include <sstream>
+#include <vector>
 
 #include "../headers/FigureStringParser.hpp"
+
+const std::unordered_map<std::string, int> FigureStringParser::paramCount =
+    {
+        {"triangle", 3},
+        {"circle", 1},
+        {"rectangle", 2},
+    };
 
 std::unique_ptr<Figure> FigureStringParser::createFigure(const std::string& figureStr) const {
     std::istringstream iStringStream(figureStr);
     std::string figureType;
 
     iStringStream >> figureType;
-
-    std::unique_ptr<Figure> result = nullptr;
-    if (figureType == "triangle") {
-        double a, b, c;
-        iStringStream >> a >> b >> c;
-        result = std::make_unique<Triangle>(a, b, c);
-    } else if (figureType == "circle") {
-        double r;
-        iStringStream >> r;
-        result = std::make_unique<Circle>(r);
-    } else if (figureType == "rectangle") {
-        double a, b;
-        iStringStream >> a >> b;
-        result = std::make_unique<Rectangle>(a, b);
-    } else {
+    if (paramCount.find(figureType) == paramCount.end()) {
         throw std::invalid_argument("Unknown figure type");
     }
 
-    if (!iStringStream) {
-        throw std::invalid_argument("Invalid figure parameters");
+    std::vector<double> params;
+    double arg;
+    while(iStringStream >> arg) {
+        params.push_back(arg);
     }
 
-    if (iStringStream.peek() != EOF) {
-        throw std::invalid_argument("Untrimmed string/Extra parameters");
+    if (paramCount.at(figureType) != params.size()) {
+        std::cout << "expected: " << paramCount.at(figureType) << " got: " << params.size();
+        std::cout << " what: ";
+        for (int i = 0;i < params.size();i++) {
+            std::cout << params[i] << " ";
+        }
+        std::cout << std::endl;
+
+        throw std::invalid_argument("Invalid number of parameters");
     }
 
-    return result;
+    if (figureType == "triangle") {
+        return std::make_unique<Triangle>(params[0], params[1], params[2]);
+    } 
+    else if (figureType == "circle") {
+        return std::make_unique<Circle>(params[0]);
+    } 
+    else if (figureType == "rectangle") {
+        return std::make_unique<Rectangle>(params[0], params[1]);
+    }
+
+    return nullptr;
 }
